@@ -40,7 +40,7 @@ def try_download_and_upload_img(path, name, url):
             return "1"
         if "502" in response.text:
             return "0"
-        return "?"
+        return response.text
     except:
         return "t"
     
