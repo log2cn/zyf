@@ -25,7 +25,7 @@ def binary_string_to_file(binary_string):
     with open(upload_tmp_file, "wb") as file:
         file.write(binary_string)
 
-def upload_box(remote_dir,name,binary_string):
+def upload(remote_dir,name,binary_string):
     remote_path = os.path.join(remote_dir, name)
     check_parent_dir(remote_path)
     binary_string_to_file(binary_string)
