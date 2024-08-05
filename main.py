@@ -30,8 +30,7 @@ def upload(remote_dir,name,binary_string):
     remote_path = os.path.join(remote_dir, name)
     check_parent_dir(remote_path)
     binary_string_to_file(binary_string)
-    local_path = upload_tmp_file
-    client.upload_sync(remote_path, local_path)
+    client.upload_sync(remote_path, upload_tmp_file)
 
 def try_download_and_upload_to_box(path, name, url):
     if check_box_has(path, name, url):
