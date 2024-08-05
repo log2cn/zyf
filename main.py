@@ -59,23 +59,26 @@ def save_remote_array(array):
         file.write(str(array))
     client.upload_sync(array_file_name, array_file_name)
 
-def check_and_save_imgs():
-    imgs_ = []
-    for img in imgs:
-        if not check_before_upload(*img):
-            imgs_.append(img)
-    save_remote_array(imgs_)
-    print("\n remote array 更新:", len(imgs_))
-    return imgs_
-
-def check_before_upload(remote_dir,name,binary_string):
+def check_box_has(remote_dir,name,binary_string):
     remote_path = os.path.join(remote_dir, name)
     if client.check(remote_path):
         return True
 
-print(len(imgs))
-for img in imgs:
-    result = try_download_and_upload_img(*img)
-    print(result, end=",", flush=True)
+def try_remove_file(filename):
+    if os.path.exists(filename):
+        print(f"删除{filename}")
+        os.remove(filename)
 
-check_and_save_imgs()
+imgs = imgs[:2]
+for i in range(10):
+    print("imgs: ", len(imgs))
+    imgs_ = []
+    for img in imgs:
+        result = try_download_and_upload_img(*img)
+        print(result, end=",", flush=True)
+        if not check_box_has(*img) and result != "4":
+            imgs_.append(img)
+    imgs = imgs_
+print("")
+try_remove_file("tmp")
+try_remove_file("array.txt")
