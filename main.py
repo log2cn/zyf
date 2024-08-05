@@ -25,7 +25,7 @@ def binary_string_to_file(binary_string):
     with open(upload_tmp_file, "wb") as file:
         file.write(binary_string)
 
-def upload(remote_dir,name,binary_string):
+def upload_box(remote_dir,name,binary_string):
     remote_path = os.path.join(remote_dir, name)
     check_parent_dir(remote_path)
     binary_string_to_file(binary_string)
@@ -55,11 +55,6 @@ def read_remote_array():
         with open(array_file_name, 'r') as file:
             return eval(file.read())
 imgs = read_remote_array()
-
-def save_remote_array(array):
-    with open(array_file_name, 'w') as file:
-        file.write(str(array))
-    client.upload_sync(array_file_name, array_file_name)
 
 def check_box_has(remote_dir,name,binary_string):
     remote_path = os.path.join(remote_dir, name)
