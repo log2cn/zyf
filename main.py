@@ -26,6 +26,8 @@ def binary_string_to_file(binary_string):
         file.write(binary_string)
 
 def upload(remote_dir,name,binary_string):
+    if check_box_has(remote_dir,name,binary_string):
+        return
     remote_path = os.path.join(remote_dir, name)
     check_parent_dir(remote_path)
     binary_string_to_file(binary_string)
