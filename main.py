@@ -18,23 +18,21 @@ def check_parent_dir(remote_path):
         check_parent_dir(dir)
     client.mkdir(dir)
 
-def binary_string_to_file(binary_string):
+def upload(remote_path, binary_string):
+    check_parent_dir(remote_path)
     with open(upload_tmp_file, "wb") as file:
         file.write(binary_string)
-
-def upload(remote_dir,name,binary_string):
-    remote_path = os.path.join(remote_dir, name)
-    check_parent_dir(remote_path)
-    binary_string_to_file(binary_string)
     client.upload_sync(remote_path, upload_tmp_file)
+    os.remove(upload_tmp_file)
 
 def try_download_and_upload_to_box(path, name, url):
-    if check_box_has(path, name, url):
+    remote_path = os.path.join(path, name)
+    if client.check(remote_path):
         return "e" # exists
     try:
         response = requests.get(url)
         if len(response.content) > 1000:
-            upload(path, name, response.content)
+            upload(remote_path, response.content)
             return "u" # upload
         if response.status_code == 404:
             return "4"
@@ -44,24 +42,13 @@ def try_download_and_upload_to_box(path, name, url):
     except Exception as e:
         return type(e).__name__
     
-def read_remote_array():
-    if client.check(array_file_name):
-        client.download_sync(array_file_name, array_file_name)
-        with open(array_file_name, 'r') as file:
-            return eval(file.read())
+client.download_sync(array_file_name, array_file_name)
+with open(array_file_name, 'r') as file:
+    imgs = eval(file.read())
+os.remove(array_file_name)
 
-def check_box_has(remote_dir,name,binary_string):
-    remote_path = os.path.join(remote_dir, name)
-    if client.check(remote_path):
-        return True
-
-def try_remove_file(filename):
-    if os.path.exists(filename):
-        os.remove(filename)
-
-imgs = read_remote_array()
 for i in range(10):
-    print("imgs:", len(imgs))
+    print("\nimgs:", len(imgs))
     imgs_ = []
     for img in imgs:
         result = try_download_and_upload_to_box(*img)
@@ -69,6 +56,3 @@ for i in range(10):
         if result not in "eu4":
             imgs_.append(img)
     imgs = imgs_
-print("")
-try_remove_file("tmp")
-try_remove_file("array.txt")
