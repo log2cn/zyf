@@ -69,7 +69,6 @@ def try_remove_file(filename):
         print(f"删除{filename}")
         os.remove(filename)
 
-imgs = imgs[:2]
 for i in range(10):
     print("imgs: ", len(imgs))
     imgs_ = []
