@@ -26,27 +26,27 @@ def binary_string_to_file(binary_string):
         file.write(binary_string)
 
 def upload(remote_dir,name,binary_string):
-    if check_box_has(remote_dir,name,binary_string):
-        return
     remote_path = os.path.join(remote_dir, name)
     check_parent_dir(remote_path)
     binary_string_to_file(binary_string)
     local_path = upload_tmp_file
     client.upload_sync(remote_path, local_path)
 
-def try_download_and_upload_img(path, name, url):
+def try_download_and_upload_to_box(path, name, url):
+    if check_box_has(path, name, url):
+        return "e" # exists
     try:
         response = requests.get(url, timeout=TIMEOUT)
         if len(response.content) > 1000:
             upload(path, name, response.content)
-            return "1"
-        if "502" in response.text:
-            return "0"
+            return "u" # upload
         if response.status_code == 404:
             return "4"
-        return response.status_code, response.text
+        if "502" in response.text:
+            return "5"
+        return response.status_code, response.text # unknown error
     except:
-        return "t"
+        return "n" # network error
     
 array_file_name = "array.txt"
 def read_remote_array():
@@ -71,13 +71,14 @@ def try_remove_file(filename):
         print(f"删除{filename}")
         os.remove(filename)
 
+imgs = imgs[:3]
 for i in range(10):
     print("imgs:", len(imgs))
     imgs_ = []
     for img in imgs:
-        result = try_download_and_upload_img(*img)
+        result = try_download_and_upload_to_box(*img)
         print(result, end=",", flush=True)
-        if not check_box_has(*img) and result != "4":
+        if result not in "eu4":
             imgs_.append(img)
     imgs = imgs_
 print("")
