@@ -45,8 +45,8 @@ def try_download_and_upload_to_box(path, name, url):
         if "502" in response.text:
             return "5"
         return response.status_code, response.text # unknown error
-    except:
-        return "n" # network error
+    except Exception as e:
+        return type(e).__name__
     
 array_file_name = "array.txt"
 def read_remote_array():
