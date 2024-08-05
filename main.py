@@ -36,7 +36,7 @@ def try_download_and_upload_to_box(path, name, url):
     if check_box_has(path, name, url):
         return "e" # exists
     try:
-        response = requests.get(url, timeout=TIMEOUT)
+        response = requests.get(url)
         if len(response.content) > 1000:
             upload(path, name, response.content)
             return "u" # upload
