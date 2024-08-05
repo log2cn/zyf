@@ -1,12 +1,8 @@
 import requests
-import re
 import os
-import time
-import traceback
 
 array_file_name = "array.txt"
 upload_tmp_file = "tmp"
-TIMEOUT = 10
 
 from webdav3.client import Client
 options = {
@@ -44,7 +40,7 @@ def try_download_and_upload_to_box(path, name, url):
             return "4"
         if "502" in response.text:
             return "5"
-        return response.status_code, response.text # unknown error
+        return f"{response.status_code}:len={len(response.text)}"
     except Exception as e:
         return type(e).__name__
     
