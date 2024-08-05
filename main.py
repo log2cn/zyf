@@ -4,6 +4,8 @@ import os
 import time
 import traceback
 
+array_file_name = "array.txt"
+upload_tmp_file = "tmp"
 TIMEOUT = 10
 
 from webdav3.client import Client
@@ -20,7 +22,6 @@ def check_parent_dir(remote_path):
         check_parent_dir(dir)
     client.mkdir(dir)
 
-upload_tmp_file = "tmp"
 def binary_string_to_file(binary_string):
     with open(upload_tmp_file, "wb") as file:
         file.write(binary_string)
@@ -48,13 +49,11 @@ def try_download_and_upload_to_box(path, name, url):
     except Exception as e:
         return type(e).__name__
     
-array_file_name = "array.txt"
 def read_remote_array():
     if client.check(array_file_name):
         client.download_sync(array_file_name, array_file_name)
         with open(array_file_name, 'r') as file:
             return eval(file.read())
-imgs = read_remote_array()
 
 def check_box_has(remote_dir,name,binary_string):
     remote_path = os.path.join(remote_dir, name)
@@ -66,6 +65,7 @@ def try_remove_file(filename):
         print(f"删除{filename}")
         os.remove(filename)
 
+imgs = read_remote_array()
 for i in range(10):
     print("imgs:", len(imgs))
     imgs_ = []
