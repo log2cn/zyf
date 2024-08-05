@@ -70,7 +70,7 @@ def try_remove_file(filename):
         os.remove(filename)
 
 for i in range(10):
-    print("imgs: ", len(imgs))
+    print("imgs:", len(imgs))
     imgs_ = []
     for img in imgs:
         result = try_download_and_upload_img(*img)
