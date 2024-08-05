@@ -57,7 +57,6 @@ def check_box_has(remote_dir,name,binary_string):
 
 def try_remove_file(filename):
     if os.path.exists(filename):
-        print(f"删除{filename}")
         os.remove(filename)
 
 imgs = read_remote_array()
