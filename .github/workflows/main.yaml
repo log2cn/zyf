@@ -20,4 +20,5 @@ jobs:
     - run: pip install webdavclient3==3.14.5
         
     - run: python main.py
-      env: PASSWORD: ${{ secrets.PASSWORD }}
+      env: 
+        PASSWORD: ${{ secrets.PASSWORD }}
