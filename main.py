@@ -42,7 +42,7 @@ def try_download_img(path, name, url):
         return type(e).__name__
 
 def try_download_array():
-    for i in range(100):
+    for i in range(30):
         try:
             client.download_sync(array_file_name, array_file_name)
             with open(array_file_name, 'r') as file:
@@ -51,11 +51,11 @@ def try_download_array():
             return imgs
         except Exception as e:
             print("try_download_array:", type(e).__name__) 
-            time.sleep(6)
+            time.sleep(60)
     raise Exception("try_download_array")
 
 imgs = try_download_array()
-for i in range(20):
+for i in range(30):
     print("\nimgs:", len(imgs))
     imgs_ = []
     for img in imgs:
