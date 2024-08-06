@@ -30,7 +30,7 @@ def try_download_img(path, name, url):
         return "e" # exists
     try:
         response = requests.get(url)
-        if len(response.content) > 1000:
+        if response.status_code == 200:
             upload(remote_path, response.content)
             return "u"
         if response.status_code == 404:
