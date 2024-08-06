@@ -26,9 +26,9 @@ def upload(remote_path, binary_string):
 
 def try_download_img(path, name, url):
     remote_path = os.path.join(path, name)
-    if client.check(remote_path):
-        return "e" # exists
     try:
+        if client.check(remote_path):
+            return "e" # exists
         response = requests.get(url)
         if response.status_code == 200:
             upload(remote_path, response.content)
@@ -55,7 +55,7 @@ def try_download_array():
     raise Exception("try_download_array")
 
 imgs = try_download_array()
-for i in range(50):
+for i in range(20):
     print("\nimgs:", len(imgs))
     imgs_ = []
     for img in imgs:
