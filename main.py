@@ -37,7 +37,7 @@ def try_download_img(path, name, url):
             return "4"
         if response.status_code == 502:
             return "5"
-        return response.status_code
+        return str(response.status_code)
     except Exception as e:
         return type(e).__name__
 
