@@ -55,7 +55,7 @@ def try_download_array():
     raise Exception("try_download_array")
 
 imgs = try_download_array()
-for i in range(10):
+for i in range(50):
     print("\nimgs:", len(imgs))
     imgs_ = []
     for img in imgs:
