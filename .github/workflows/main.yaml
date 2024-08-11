@@ -2,7 +2,7 @@ name: 每小时任务
 
 on:
   schedule:
-    - cron: '0,30 * * * *'
+    - cron: '0 * * * *'
   push:
     branches: [ "main" ]
 
