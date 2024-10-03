@@ -1,7 +1,4 @@
-import requests, os, time
-
-array_file_name = "array.txt"
-upload_tmp_file_name = "tmp"
+import os
 
 from webdav3.client import Client
 options = {
@@ -9,52 +6,65 @@ options = {
     'webdav_login': '502023330057@nju.edu.cn',
     'webdav_password': os.environ.get('PASSWORD'),
 }
-client = Client(options)
+box = Client(options)
 
-def check_parent_dir_recursive(remote_path):
-    dir = os.path.dirname(remote_path)
-    if not client.check(dir):
-        check_parent_dir_recursive(dir)
-    client.mkdir(dir)
+def eval_remote_file(client, file_name):
+    tmp_file_name = "eval_remote_file.tmp"
+    client.download_sync(file_name, tmp_file_name)
+    with open(tmp_file_name) as temp_file:
+        r = eval(temp_file.read())
+    os.remove(tmp_file_name)
+    return r
 
-def upload(remote_path, binary_string):
-    check_parent_dir_recursive(remote_path)
-    with open(upload_tmp_file_name, "wb") as file:
-        file.write(binary_string)
-    client.upload_sync(remote_path, upload_tmp_file_name)
-    os.remove(upload_tmp_file_name)
+def ensure_parent_dir_recursive(client, remote_path):
+    dirname = os.path.dirname(remote_path)
+    if not client.check(dirname):
+        ensure_parent_dir_recursive(client, dirname)
+    client.mkdir(dirname)
 
-def try_download_img(path, name, url):
+def upload_binary_string(client, remote_path, binary_string):
+    temp_file_name = "upload_binary_string.tmp"
+    ensure_parent_dir_recursive(client, remote_path)
+    with open(temp_file_name, "wb") as temp_file:
+        temp_file.write(binary_string)
+    client.upload_sync(remote_path, temp_file_name)
+    os.remove(temp_file_name)
+
+def print_no_newline(*args):
+    print(*args, flush=True, end=" ")
+
+import requests
+def try_process_img(client, func_log, img):
+    path, name, url = img
     remote_path = os.path.join(path, name)
     try:
-        if client.check(remote_path):
-            return "e" # exists
+        if client.check(remote_path): # img exists at client
+            func_log("e")
+            return False
         response = requests.get(url)
         if response.status_code == 200:
-            upload(remote_path, response.content)
-            return "u"
-        if response.status_code == 404:
-            return "4"
+            upload_binary_string(client, remote_path, response.content)
+            func_log("u")
+            return False
+        if response.status_code == 404: # out of date
+            func_log("4")
+            return False
         if response.status_code == 502:
-            return "5"
-        return str(response.status_code)
-    except Exception as e:
-        return type(e).__name__
-
-def get_array():
-    client.download_sync(array_file_name, array_file_name)
-    with open(array_file_name, 'r') as file:
-        imgs = eval(file.read())
-    os.remove(array_file_name)
-    return imgs
+            func_log("5")
+            return True
+    except Exception as e: # box error, network error
+        func_log(f"[type(e).__name__]")
+        return True
     
-imgs = get_array()
-for i in range(30):
-    print("\nimgs:", len(imgs))
-    imgs_ = []
+imgs = eval_remote_file(box, "array.txt") # [[path, name, url], ...]
+
+for i in range(50):
+    print("imgs:", len(imgs))
+    imgs_need_retry = [] # retry queue
     for img in imgs:
-        result = try_download_img(*img)
-        print(result, end=",", flush=True)
-        if result not in "eu4":
-            imgs_.append(img)
-    imgs = imgs_
+        if try_process_img(box, print_no_newline, img): # need_retry
+            imgs_need_retry.append(img)
+    if not imgs_need_retry:
+        break
+    imgs = imgs_need_retry
+    print() # newline
