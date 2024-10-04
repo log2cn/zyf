@@ -53,7 +53,7 @@ def try_process_img(client, func_log, img):
             func_log("5")
             return True
     except Exception as e: # box error, network error
-        func_log(f"[type(e).__name__]")
+        func_log(f"[{type(e).__name__}]")
         return True
     
 imgs = eval_remote_file(box, "array.txt") # [[path, name, url], ...]
