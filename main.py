@@ -44,7 +44,7 @@ def try_process_img(client, func_log, img):
         response = requests.get(url)
         if response.status_code == 200:
             upload_binary_string(client, remote_path, response.content)
-            func_log("u")
+            func_log(".")
             return False
         if response.status_code == 404: # out of date
             func_log("4")
