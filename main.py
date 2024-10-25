@@ -38,12 +38,13 @@ def try_process_img(client, func_log, img):
     path, name, url = img
     remote_path = os.path.join(path, name)
     try:
-        if client.check(remote_path): # img exists at client
-            func_log("e")
-            return False
+        # if client.check(remote_path): # img exists at client
+        #     func_log("e")
+        #     return False
         response = requests.get(url)
         if response.status_code == 200:
             upload_binary_string(client, remote_path, response.content)
+            save_file(path, name, response.content)
             func_log(".")
             return False
         if response.status_code == 404: # out of date
@@ -53,10 +54,18 @@ def try_process_img(client, func_log, img):
             func_log("5")
             return True
     except Exception as e: # box error, network error
-        func_log(f"[{type(e).__name__}]")
+        func_log(type(e).__name__)
         return True
-    
+
+def save_file(path, name, binary_string):
+    path = os.path.join("upload", path)
+    os.makedirs(path, exist_ok=True)
+    path = os.path.join(path, name)
+    with open(path, 'wb') as f:
+        f.write(binary_string)
+
 imgs = eval_remote_file(box, "array.txt") # [[path, name, url], ...]
+imgs = imgs[:2]
 
 for i in range(50):
     print("imgs:", len(imgs))

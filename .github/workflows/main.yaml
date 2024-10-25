@@ -10,15 +10,18 @@ jobs:
   run-script:
     name: job0
     runs-on: ubuntu-latest
+    env: 
+      PASSWORD: ${{ secrets.PASSWORD }}
+
     steps:
     - uses: actions/checkout@v4
 
     - uses: actions/setup-python@v3
-      with: 
-        python-version: 3.11
+      # with: 
+      #   python-version: 3.11
         
     - run: pip install webdavclient3==3.14.5
-        
+    - run: mkdir upload
     - run: python main.py
-      env: 
-        PASSWORD: ${{ secrets.PASSWORD }}
+    - run: bash upload.sh
+      
