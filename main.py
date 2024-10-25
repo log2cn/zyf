@@ -65,7 +65,6 @@ def save_file(path, name, binary_string):
         f.write(binary_string)
 
 imgs = eval_remote_file(box, "array.txt") # [[path, name, url], ...]
-imgs = imgs[:1]
 
 for i in range(50):
     print("imgs:", len(imgs))
