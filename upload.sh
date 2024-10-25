@@ -7,7 +7,7 @@ git init --initial-branch=main
 REPO_URL="https://log2:$PASSWORD@git.nju.edu.cn/log2/zyf_data.git"
 git remote add origin "$REPO_URL"
 git add .
-git config user.email "upload@gmail.com"
+git config user.email "log2cn@gmail.com"
 git config user.name "log2"
 
 branch_name=$(cat /dev/urandom | xxd -p | head -c 16)
