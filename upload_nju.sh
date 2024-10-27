@@ -6,9 +6,10 @@ trap "cd .. && rm -rf tmp" EXIT
 git config user.email "log2cn@gmail.com"
 git config user.name "log2"
 
-branch_name=$(xxd -p -l 8 /dev/urandom)
-git checkout -b $branch_name
-mkdir data && mv ../data/* ./data && rmdir ../data
+git push -q origin --delete a
+git checkout -b a
+
+touch a.txt
 git add .
-git commit -m "upload from github" > /dev/null
-git push -u origin $branch_name 2>&1 | grep -v "^remote:"
+git commit -m "upload from nju" > /dev/null
+git push -q origin list 2>&1 | grep -v "^remote:"
