@@ -64,7 +64,12 @@ def save_file(path, name, binary_string):
     with open(path, 'wb') as f:
         f.write(binary_string)
 
-imgs = eval_remote_file(box, "array.txt") # [[path, name, url], ...]
+import json
+if os.path.exists('data.list'):
+    with open('data.list', 'r') as file:
+        imgs = json.loads(file.read())
+else:
+    imgs = eval_remote_file(box, "array.txt") # [[path, name, url], ...]
 
 for i in range(50):
     print("imgs:", len(imgs))
