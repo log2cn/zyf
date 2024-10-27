@@ -10,5 +10,5 @@ branch_name=$(xxd -p -l 8 /dev/urandom)
 git checkout -b $branch_name
 mkdir data && mv ../upload/* ./data && rmdir ../upload
 git add .
-git commit -m "upload files from github" > /dev/null
+git commit -m "upload from github" > /dev/null
 git push -u origin $branch_name 2>&1 | grep -v "^remote:"

@@ -9,4 +9,3 @@ git push -q origin --delete list
 mv ./data.json ..
 cd ..
 rm -rf tmp
-ls
