@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v3
-    - run: sudo apt update && sudp apt install -y rclone
+    - run: sudo apt update && sudo apt install -y rclone
     - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
