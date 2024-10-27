@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v3
-    - run: pip install webdavclient3==3.14.5 rclone
+    - run: apt update && apt install rclone
     - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
     - run: mkdir -p /root/.config/rclone && mv rclone.conf /root/.config/rclone
     
