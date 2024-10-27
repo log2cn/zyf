@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       PASSWORD: ${{ secrets.PASSWORD }}
+      TOKEN: ${{ secrets.TOKEN }}
 
     steps:
     - uses: actions/checkout@v4
