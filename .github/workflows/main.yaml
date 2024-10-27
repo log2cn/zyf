@@ -1,11 +1,8 @@
-name: schedule
+name: main
 
 on:
-  schedule:
-    - cron: '0 * * * *'
   push:
     branches:
-      - main
       - list
 
 jobs:
