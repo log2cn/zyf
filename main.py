@@ -65,8 +65,8 @@ def save_file(path, name, binary_string):
         f.write(binary_string)
 
 import json
-if os.path.exists('data.list'):
-    with open('data.list', 'r') as file:
+if os.path.exists('data.json'):
+    with open('data.json', 'r') as file:
         imgs = json.load(file)
 else:
     imgs = eval_remote_file(box, "array.txt") # [[path, name, url], ...]
