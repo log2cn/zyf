@@ -25,5 +25,4 @@ jobs:
     - run: bash get_json.sh
     - run: python main.py
     - run: ls data
-    - run: rclone copy data/ webdav:data/
-    - run: bash upload_nju.sh
+    - run: rclone copy data/ box:data/
