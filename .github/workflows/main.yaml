@@ -18,8 +18,7 @@ jobs:
     - uses: actions/setup-python@v3
     - run: sudo apt update
     - run: sudo apt install -y rclone
-    - run: python -m pip install --upgrade pip
-    - run: pip install -r requests
+    - run: pip install requests
     - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
