@@ -1,12 +1,6 @@
-name: main
+name: push
 
-on:
-  schedule:
-    - cron: '0 * * * *'
-  push:
-    branches:
-      - main
-      - list
+on: push
 
 jobs:
   run-script:
