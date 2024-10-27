@@ -22,7 +22,7 @@ jobs:
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
     - run: bash get_json.sh
-    - run: python3 main.py
+    - run: python main.py
     - run: ls data
     - run: rclone copy data/ webdav:data/
     - run: bash upload_nju.sh
