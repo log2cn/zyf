@@ -12,5 +12,6 @@ echo $(cat data.json) | jq -c '.[]' | while read -r img; do
   fi
 done
 
+rm data.json
 ls data
 rclone move --delete-empty-src-dirs data/ box:data/
