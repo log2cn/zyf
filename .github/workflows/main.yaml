@@ -19,6 +19,6 @@ jobs:
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
     - run: rclone move box:/data.json .
-    - run: python main.py
+    - run: bash main.sh
     - run: ls data
     - run: rclone move --delete-empty-src-dirs data/ box:data/
