@@ -1,4 +1,4 @@
-rclone move box:/data.json .
+rclone copy box:/data.json .
 
 echo $(cat data.json) | jq -c '.[]' | while read -r img; do
   path=data/$(echo "$img" | jq -r '.[0]')
