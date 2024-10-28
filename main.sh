@@ -6,13 +6,10 @@ echo $(cat data.json) | jq -c '.[]' | while read -r img; do
 
   mkdir -p $(dirname $path)
 
-  for ((i=0; i<5; i++)); do
-    curl -s -o $path $url
-    if [[ $? -eq 0 ]]; then
-      echo "$path $i"
-      break
-    fi
-  done
+  curl -s -o $path $url
+  if [[ $? -eq 0 ]]; then
+    curl -o $path $url
+  fi
 done
 
 ls data
