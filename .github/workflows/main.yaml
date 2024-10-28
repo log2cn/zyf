@@ -1,9 +1,6 @@
 name: main
 
-on:
-  push:
-    branches:
-      - list
+on: push
 
 jobs:
   run-script:
@@ -11,7 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       TOKEN: ${{ secrets.TOKEN }}
-      PASSWORD: ${{ secrets.PASSWORD }}
       PASSWORD_RCLONE: ${{ secrets.PASSWORD_RCLONE }}
     steps:
     - uses: actions/checkout@v4
@@ -22,7 +18,7 @@ jobs:
     - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
-    - run: bash get_json.sh
+    - run: rclone move box:/data.json .
     - run: python main.py
     - run: ls data
-    - run: rclone copy data/ box:data/
+    - run: rclone move --delete-empty-src-dirs data/ box:data/
