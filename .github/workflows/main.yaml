@@ -18,7 +18,4 @@ jobs:
     - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
-    - run: rclone move box:/data.json .
     - run: bash main.sh
-    - run: ls data
-    - run: rclone move --delete-empty-src-dirs data/ box:data/
