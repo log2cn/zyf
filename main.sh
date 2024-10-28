@@ -5,9 +5,9 @@ echo $(cat data.json) | jq -c '.[]' | while read -r img; do
   url=$(echo "$img" | jq -r '.[1]')
 
   mkdir -p $(dirname $path)
-
   curl -s -o $path $url
-  if [[ $? -eq 0 ]]; then
+  
+  if [[ $? -ne 0 ]]; then
     curl -o $path $url
   fi
 done
