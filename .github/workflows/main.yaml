@@ -10,10 +10,8 @@ jobs:
       PASSWORD_RCLONE: ${{ secrets.PASSWORD_RCLONE }}
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v3
     - run: sudo apt update
     - run: sudo apt install -y rclone
-    - run: pip install requests
     - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
