@@ -6,8 +6,8 @@ echo $(cat data.json) | jq -c '.[]' | while read -r img; do
 
   for ((i=0; i<5; i++)); do
     curl -s -o $local_path $img_url
-    
     if [[ $? -eq 0 ]]; then
+      echo "$local_path i"
       break
     fi
   done
