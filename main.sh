@@ -1,6 +1,4 @@
-rclone copy box:/data.json .
-
-echo $(cat data.json) | jq -c '.[]' | while read -r img; do
+echo $(rclone cat box:data.json) | jq -c '.[]' | while read -r img; do
   path=data/$(echo "$img" | jq -r '.[0]')
   url=$(echo "$img" | jq -r '.[1]')
 
@@ -12,6 +10,4 @@ echo $(cat data.json) | jq -c '.[]' | while read -r img; do
   fi
 done
 
-rm data.json
-ls data
-rclone move --delete-empty-src-dirs data/ box:data/
+time rclone move --delete-empty-src-dirs data/ box:data/
