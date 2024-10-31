@@ -14,4 +14,4 @@ jobs:
     - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
-    - run: bash -x main.sh
+    - run: bash main.sh
