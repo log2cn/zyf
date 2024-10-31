@@ -3,11 +3,7 @@ echo $(rclone cat box:data.json) | jq -c '.[]' | while read -r img; do
   url=$(echo "$img" | jq -r '.[1]')
 
   mkdir -p $(dirname $path)
-  curl -s -o $path $url
-  
-  if [[ $? -ne 0 ]]; then
-    curl -o $path $url
-  fi
+  curl -sS --retry 5 -o $path $url
 done
 
 time rclone move --delete-empty-src-dirs data/ box:data/
