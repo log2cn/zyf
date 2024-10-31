@@ -1,7 +1,4 @@
-echo $(rclone cat box:data.json) | jq -c '.[]' | while read -r img; do
-  path=data/$(echo "$img" | jq -r '.[0]')
-  url=$(echo "$img" | jq -r '.[1]')
-
+rclone cat box:data.txt | while read -r path url; do
   mkdir -p $(dirname $path)
   curl -sS --retry 5 -o $path $url
 done
