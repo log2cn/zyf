@@ -6,7 +6,6 @@ jobs:
     name: job0
     runs-on: ubuntu-latest
     env: 
-      TOKEN: ${{ secrets.TOKEN }}
       PASSWORD_RCLONE: ${{ secrets.PASSWORD_RCLONE }}
     steps:
     - uses: actions/checkout@v4
