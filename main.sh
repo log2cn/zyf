@@ -4,4 +4,4 @@ rclone cat box:data.txt | while read -r path url; do
   curl -sS --retry 5 -o $path $url
 done
 
-time rclone move --delete-empty-src-dirs data/ box:data/
+time rclone move --delete-empty-src-dirs data/ box:$(date +"%Y%m%d_%H%M")/
