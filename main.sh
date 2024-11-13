@@ -8,7 +8,7 @@ curl -sSf -H "$GITLAB_HEADER" "$GITLAB_REPO/repository/files/nmc_targets.txt/raw
 | while read -r url path; do
     path="$DATA_DIR/$path"
     mkdir -p $(dirname $path)
-    curl -sS --retry 5 -o $path $url
+    curl -sSf --retry 5 -o $path $url
     # break # for test
   done
 # exit # for test
