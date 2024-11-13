@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       PASSWORD_RCLONE: ${{ secrets.PASSWORD_RCLONE }}
+      GITLAB_TOKEN: ${{ secrets.GITLAB }}
     steps:
     - uses: actions/checkout@v4
     - run: sudo apt update
