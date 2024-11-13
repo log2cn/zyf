@@ -1,6 +1,6 @@
 export PYTHONDONTWRITEBYTECODE=1 # disable __pycache__ 
-export TARGETS=nmc_targets.py
-export DATA_DIR=data
+TARGETS=nmc_targets.py
+DATA_DIR=data
 
 # download TARGETS for python
 curl -sS -o $TARGETS --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
