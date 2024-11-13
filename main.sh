@@ -1,4 +1,4 @@
-export PYTHONDONTWRITEBYTECODE=1 # disable __pycache__ 
+PYTHONDONTWRITEBYTECODE=1 # disable __pycache__ 
 DATA_DIR=data
 GITLAB_REPO="https://git.nju.edu.cn/api/v4/projects/log2%2fzyf_nas"
 GITLAB_HEADER="PRIVATE-TOKEN: $GITLAB_TOKEN"
