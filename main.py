@@ -65,8 +65,8 @@ def get_nmc_imgs(target):
 from sys import stdin
 def read_targets():
     for line in stdin:
-        line = line.strip()
-        if line and not line.startswith('#'):
+        line = line.split("#")[0].strip()
+        if line:
             yield line
 
 for target in read_targets():
