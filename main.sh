@@ -11,10 +11,6 @@ python3 main.py -i $TARGETS | while read -r path url; do
   path=$DATA_DIR/$path
   mkdir -p $(dirname $path)
   curl -sS --retry 5 -o $path $url
-
-  if [ ! -f /.dockerenv ]; then
-    break # for test
-  fi
 done
 rm $TARGETS
 
