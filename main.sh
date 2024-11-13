@@ -1,18 +1,15 @@
 export PYTHONDONTWRITEBYTECODE=1 # disable __pycache__ 
-TARGETS=nmc_targets.py
 DATA_DIR=data
 
-# download TARGETS for python
-curl -sS -o $TARGETS --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-    "https://git.nju.edu.cn/api/v4/projects/log2%2fzyf_nas/repository/files/nmc_targets.py/raw?ref=main"
-
-# download data
-python3 main.py -i $TARGETS | while read -r path url; do
-  path=$DATA_DIR/$path
-  mkdir -p $(dirname $path)
-  curl -sS --retry 5 -o $path $url
-done
-rm $TARGETS
+curl -sS --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+  "https://git.nju.edu.cn/api/v4/projects/log2%2fzyf_nas/repository/files/nmc_targets.txt/raw?ref=main" \
+  | python3 main.py \
+  | while read -r path url; do
+    path="$DATA_DIR/$path"
+    mkdir -p $(dirname $path)
+    curl -sS --retry 5 -o $path $url
+    # break # for test
+  done
 
 # data -> box
 time rclone move --delete-empty-src-dirs $DATA_DIR/ box:$(date +"%Y%m%d_%H%M")/

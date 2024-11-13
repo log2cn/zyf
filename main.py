@@ -47,8 +47,6 @@ from time import strftime, strptime
 import requests
 import re
 def get_nmc_imgs(target):
-    imgs = []
-
     try:
         url_nmc = f"http://www.nmc.cn/publish/{target}"
         text = requests.get(url_nmc).text
@@ -56,26 +54,16 @@ def get_nmc_imgs(target):
             url = match.group(1).split('?')[0]
             time = strptime(re.search(r"\d{12}", url).group(), "%Y%m%d%H%M")
             path = strftime(get_path(target), time)
-            imgs.append([path, url])
+            yield path, url
     except Exception as e:
         print(f"{target}: {e.__class__.__name__}: {e}", file=stderr)
 
-    return imgs
+from sys import stdin
+def read_targets():
+    for line in stdin:
+        if line and not line.startswith('#'):
+            yield line
 
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--targets-config-file', required=True)
-args = parser.parse_args()
-
-from importlib import import_module
-module_name = args.targets_config_file.removesuffix(".py")
-targets = import_module(module_name).targets
-
-imgs = []
-for target in targets:
-    imgs = imgs + get_nmc_imgs(target)
-
-for path, url in imgs:
-    print(path, url)
-
-print("test", file=stderr)
+for target in read_targets():
+    for path, url in get_nmc_imgs(target):
+        print(path, url)
