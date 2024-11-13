@@ -1,8 +1,9 @@
 export PYTHONDONTWRITEBYTECODE=1 # disable __pycache__ 
 DATA_DIR=data
+GITLAB_REPO="https://git.nju.edu.cn/api/v4/projects/log2%2fzyf_nas"
+GITLAB_HEADER="PRIVATE-TOKEN: $GITLAB_TOKEN"
 
-curl -sS --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-  "https://git.nju.edu.cn/api/v4/projects/log2%2fzyf_nas/repository/files/nmc_targets.txt/raw?ref=main" \
+curl -sSf -H "$GITLAB_HEADER" "$GITLAB_REPO/repository/files/nmc_targets.txt/raw" \
   | python3 main.py \
   | while read -r url path; do
     path="$DATA_DIR/$path"
@@ -17,5 +18,4 @@ time rclone move --delete-empty-src-dirs $DATA_DIR/ box:$(date +"%Y%m%d_%H%M")/
 rmdir $DATA_DIR
 
 # trigger next steps
-curl -sS -o /dev/null -X POST --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
-    "https://git.nju.edu.cn/api/v4/projects/log2%2fzyf_nas/pipeline?ref=main"
+curl -sSf -o /dev/null -X POST -H "$GITLAB_HEADER" "$GITLAB_REPO/pipeline?ref=main"
