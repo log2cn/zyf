@@ -42,8 +42,13 @@ def get_path(target):
 
     return dirname + "/" + path
 
+from datetime import datetime
+def url2time(url):
+    time_str = re.search(r"\d{12}", url).group()
+    time = datetime.strptime(time_str, "%Y%m%d%H%M")
+    return time
+
 from sys import stderr
-from time import strftime, strptime
 import requests
 import re
 def get_nmc_imgs(target):
@@ -52,18 +57,18 @@ def get_nmc_imgs(target):
         text = requests.get(url_nmc).text
         for match in re.finditer(r'data-img="(.*?)"', text):
             url = match.group(1).split('?')[0]
-            time = strptime(re.search(r"\d{12}", url).group(), "%Y%m%d%H%M")
-            path = strftime(get_path(target), time)
-            yield path, url
+            path = url2time(url).strftime(get_path(target))
+            yield url, path
     except Exception as e:
         print(f"{target}: {e.__class__.__name__}: {e}", file=stderr)
 
 from sys import stdin
 def read_targets():
     for line in stdin:
+        line = line.strip()
         if line and not line.startswith('#'):
             yield line
 
 for target in read_targets():
-    for path, url in get_nmc_imgs(target):
-        print(path, url)
+    for url, path in get_nmc_imgs(target):
+        print(url, path)
