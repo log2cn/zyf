@@ -14,7 +14,7 @@ curl -sSf -H "$GITLAB_HEADER" "$GITLAB_REPO/repository/files/nmc_targets.txt/raw
 # exit # for test
 
 # data -> box
-time rclone move --delete-empty-src-dirs $DATA_DIR/ box:$(date +"%Y%m%d_%H%M")/
+time rclone move --delete-empty-src-dirs $DATA_DIR/ box:/
 rmdir $DATA_DIR
 
 # trigger next steps
