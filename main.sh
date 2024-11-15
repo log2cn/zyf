@@ -9,7 +9,7 @@ curl -sSf -H "PRIVATE-TOKEN: $GITLAB_TOKEN" "$REPO/repository/files/nmc_targets.
 | python3 main.py \
 > targets.txt
 
-curl -H "Authorization: Token $BOX_TOKEN" $UPLOAD_URL \
+curl -sSf $UPLOAD_URL \
     -F file=@targets.txt -F parent_dir=/ -F replace=1
 
 rm targets.txt
