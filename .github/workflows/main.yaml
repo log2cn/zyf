@@ -15,7 +15,7 @@ jobs:
     - uses: actions/checkout@v4
     - run: sudo apt update
     - run: sudo apt install -y rclone python3-requests
-    - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|" rclone.conf
+    - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|g" rclone.conf
     - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
     
     - run: bash main.sh
