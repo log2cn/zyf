@@ -10,15 +10,16 @@ curl -sSf -H "$GITLAB_HEADER" "$GITLAB_REPO/repository/files/nmc_targets.txt/raw
     path="$DATA_DIR/$path"
     mkdir -p $(dirname $path)
     curl -sSf --retry 5 -o $path $url
-    # break # for test
+    break # for test
   done
 # exit # for test
 
-# for test
-rclone move targets.txt box:/
+# targets.txt -> zyf
+rclone move targets.txt zyf:/
 rm targets.txt
 
 # data -> box
+find "$DATA_DIR" -type f | wc -l
 time rclone move --delete-empty-src-dirs $DATA_DIR/ box:/
 rmdir $DATA_DIR
 
