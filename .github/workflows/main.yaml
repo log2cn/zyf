@@ -3,6 +3,7 @@ name: main
 on:
   schedule:
     - cron: '0 * * * *'
+  push:
 
 jobs:
   run-script:
