@@ -5,6 +5,7 @@ GITLAB_HEADER="PRIVATE-TOKEN: $GITLAB_TOKEN"
 
 curl -sSf -H "$GITLAB_HEADER" "$GITLAB_REPO/repository/files/nmc_targets.txt/raw" \
 | python3 main.py \
+| tee targets.txt \
 | while read -r url path; do
     path="$DATA_DIR/$path"
     mkdir -p $(dirname $path)
@@ -12,6 +13,10 @@ curl -sSf -H "$GITLAB_HEADER" "$GITLAB_REPO/repository/files/nmc_targets.txt/raw
     # break # for test
   done
 # exit # for test
+
+# for test
+rclone move targets.txt box:/
+rm targets.txt
 
 # data -> box
 time rclone move --delete-empty-src-dirs $DATA_DIR/ box:/
