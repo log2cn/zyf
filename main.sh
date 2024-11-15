@@ -4,7 +4,7 @@ GITLAB_HEADER="PRIVATE-TOKEN: $GITLAB_TOKEN"
 
 curl -sSf -H "$GITLAB_HEADER" "$GITLAB_REPO/repository/files/nmc_targets.txt/raw" \
 | python3 main.py \
-> rclone rcat zyf:targets.txt
+| rclone rcat zyf:targets.txt
 
 # trigger next steps
 curl -sSf -o /dev/null -X POST -H "$GITLAB_HEADER" "$GITLAB_REPO/pipeline?ref=main"
