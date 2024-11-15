@@ -10,13 +10,11 @@ jobs:
     name: job0
     runs-on: ubuntu-latest
     env: 
-      PASSWORD_RCLONE: ${{ secrets.PASSWORD_RCLONE }}
       GITLAB_TOKEN: ${{ secrets.GITLAB }}
+      BOX_TOKEN: ${{ secrets.BOX_TOKEN }}
     steps:
     - uses: actions/checkout@v4
     - run: sudo apt update
-    - run: sudo apt install -y rclone python3-requests
-    - run: sed -i "s|PASSWORD_RCLONE|$PASSWORD_RCLONE|g" rclone.conf
-    - run: mkdir -p ~/.config/rclone && mv rclone.conf ~/.config/rclone
+    - run: sudo apt install -y python3-requests
     
-    - run: bash main.sh
+    - run: bash -x main.sh
