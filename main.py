@@ -7,7 +7,6 @@ def get_path(target):
     # default
     dirname = target.replace("/","-")
     path = "%Y%m/%Y%m%d/%Y%m%d_%H%Mz.png"
-    no_match = False
     
     if target.startswith("observations/"):
         if target.endswith("heavyrain") or target.endswith("gale"):
@@ -20,7 +19,7 @@ def get_path(target):
         elif target.startswith("observations/hourly-"):
             pass
         else:
-            no_match = True
+            raise Exception(f"no match for observations/: {target}")
     elif target.startswith("radar/"):
         prefix = target.split("/")[-1]
         path = f"%Y%m/%Y%m%d/{prefix}_%Y%m%d_%H%Mz.png"
@@ -29,33 +28,30 @@ def get_path(target):
         elif target_ext == "html":
             pass
         else:
-            no_match = True
+            raise Exception(f"no match for radar/: {target}")
     elif target.startswith("tianqishikuang/"):
         dirname = dirname.replace("-index", "")
     elif target.startswith("satellite/"):
         pass
     else:
-        no_match = True
-
-    if no_match:
         raise Exception(f"no match: {target}")
 
     return dirname + "/" + path
 
+import re
+IMG_PATTERN = re.compile(r'data-img="(.*?)"')
+TIME_REGEX = re.compile(r"\d{12}")
+
 from datetime import datetime
 def extract_time(url):
-    time_str = re.search(r"\d{12}", url).group()
-    time = datetime.strptime(time_str, "%Y%m%d%H%M")
-    return time
+    time_str = TIME_REGEX.search(url).group()
+    return datetime.strptime(time_str, "%Y%m%d%H%M")
 
 import requests
 def get_text(url):
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.text
-
-import re
-IMG_PATTERN = re.compile(r'data-img="(.*?)"')
+    with requests.get(url) as response:
+        response.raise_for_status()
+        return response.text
 
 def get_image_urls(target):
     url = f"http://www.nmc.cn/publish/{target}"
