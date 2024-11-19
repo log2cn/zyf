@@ -43,32 +43,33 @@ def get_path(target):
     return dirname + "/" + path
 
 from datetime import datetime
-def url2time(url):
+def extract_time(url):
     time_str = re.search(r"\d{12}", url).group()
     time = datetime.strptime(time_str, "%Y%m%d%H%M")
     return time
 
-from sys import stderr
 import requests
+def get_text(url):
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.text
+
 import re
-def get_nmc_imgs(target):
-    try:
-        url_nmc = f"http://www.nmc.cn/publish/{target}"
-        text = requests.get(url_nmc).text
-        for match in re.finditer(r'data-img="(.*?)"', text):
-            url = match.group(1).split('?')[0]
-            path = url2time(url).strftime(get_path(target))
-            yield url, path
-    except Exception as e:
-        print(f"{target}: {e.__class__.__name__}: {e}", file=stderr)
+IMG_PATTERN = re.compile(r'data-img="(.*?)"')
 
-from sys import stdin
-def read_targets():
-    for line in stdin:
-        line = line.split("#")[0].strip()
-        if line:
-            yield line
+def get_image_urls(target):
+    url = f"http://www.nmc.cn/publish/{target}"
+    for match in IMG_PATTERN.finditer(get_text(url)):
+        image_url = match.group(1).split('?')[0]
+        save_path = extract_time(url).strftime(get_path(target))
+        yield image_url, save_path
 
-for target in read_targets():
-    for url, path in get_nmc_imgs(target):
-        print(url, path)
+from sys import stdin, stderr
+for line in stdin:
+    target = line.split("#")[0].strip()
+    if target:
+        try:
+            for image_url, save_path in get_image_urls(target):
+                print(image_url, save_path)
+        except Exception as e:
+            print(f"{target}: {e.__class__.__name__}: {e}", file=stderr)
