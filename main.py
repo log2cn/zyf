@@ -61,7 +61,7 @@ def get_image_urls(target):
     url = f"http://www.nmc.cn/publish/{target}"
     for match in IMG_PATTERN.finditer(get_text(url)):
         image_url = match.group(1).split('?')[0]
-        save_path = extract_time(url).strftime(get_path(target))
+        save_path = extract_time(image_url).strftime(get_path(target))
         yield image_url, save_path
 
 from sys import stdin, stderr
