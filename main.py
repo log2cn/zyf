@@ -1,3 +1,5 @@
+import re
+
 def get_path(target):
     # split ext
     assert target.count('.') == 1, "target.count('.') != 1"
@@ -38,10 +40,7 @@ def get_path(target):
 
     return dirname + "/" + path
 
-import re
-IMG_PATTERN = re.compile(r'data-img="(.*?)"')
 TIME_REGEX = re.compile(r"\d{12}")
-
 from datetime import datetime
 def extract_time(url):
     time_str = TIME_REGEX.search(url).group()
@@ -53,6 +52,7 @@ def get_text(url):
         response.raise_for_status()
         return response.text
 
+IMG_PATTERN = re.compile(r'data-img="(.*?)"')
 def get_image_urls(target):
     url = f"http://www.nmc.cn/publish/{target}"
     for match in IMG_PATTERN.finditer(get_text(url)):
