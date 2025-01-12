@@ -65,7 +65,7 @@ for line in stdin:
     target = line.split("#")[0].strip()
     if target:
         try:
-            for image_url, save_path in get_image_urls(target):
-                print(image_url, save_path)
+            for array in get_image_urls(target):
+                print(*array)
         except Exception as e:
             print(f"{target}: {e.__class__.__name__}: {e}", file=stderr)
