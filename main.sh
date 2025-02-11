@@ -8,7 +8,7 @@ curl -sSf -H "$GIT_HEAD" "$GIT_REPO/repository/files/nmc_targets.txt/raw" \
 > targets.txt
 
 # upload targets.txt to box
-box_upload_url = $( curl -sSf -H "$BOX_HEAD" "$BOX_REPO/upload-link/" | tr -d "\"" )
+box_upload_url=$( curl -sSf -H "$BOX_HEAD" "$BOX_REPO/upload-link/" | tr -d "\"" )
 curl -sSf -F file=@targets.txt -F parent_dir=/ -F replace=1 "$box_upload_url"
 rm targets.txt
 
