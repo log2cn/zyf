@@ -14,4 +14,4 @@ curl -sSf -F file=@targets.txt -F parent_dir=/ -F replace=1 "$BOX_UPLOAD_URL"
 rm targets.txt
 
 # trigger next steps
-curl -sSf -H "$GIT_HEAD" "$GIT_REPO/pipeline?ref=main" -X POST > /dev/null
+curl -sSf -H "$GIT_HEAD" "$GIT_REPO/pipeline?ref=main" -X POST
