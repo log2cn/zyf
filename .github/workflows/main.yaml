@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env: 
       GITLAB_TOKEN: ${{ secrets.GITLAB }}
-      BOX_TOKEN: ${{ secrets.BOX_TOKEN }}
     steps:
     - uses: actions/checkout@v4
     - run: sudo apt update
