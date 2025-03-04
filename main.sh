@@ -11,4 +11,5 @@ curl -sSf -H "$GIT_HEAD" "$GIT_REPO/repository/files/html_targets.txt/raw" \
 | curl -sSf -F file="@-;filename=png_targets.txt" -F parent_dir=/ -F replace=1 "$BOX_UPLOAD_URL"
 
 # trigger next steps
-curl -sSf -H "$GIT_HEAD" "$GIT_REPO/pipeline?ref=main" -X POST
+curl -sSf -X PUT  -H "$GIT_HEAD" "$GIT_REPO/variables/PNG_TARGETS" --form "value=1 2 4 5" 
+curl -sSf -X POST -H "$GIT_HEAD" "$GIT_REPO/pipeline?ref=main" 
