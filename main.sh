@@ -1,12 +1,12 @@
-GIT_REPO="https://git.nju.edu.cn/api/v4/projects/13817"
-GIT_HEAD="PRIVATE-TOKEN: $GITLAB_TOKEN"
+REPO="https://git.nju.edu.cn/api/v4/projects/13817"
+CURL="curl -sSf -H \"PRIVATE-TOKEN: $GITLAB_TOKEN\" --retry 3"
 
 # html_targets -> png_targets
-curl -sSf -H "$GIT_HEAD" "$GIT_REPO/repository/files/html_targets.txt/raw" \
+$CURL "$REPO/repository/files/html_targets.txt/raw" \
 | python3 main.py \
 | tr '\n' ' ' \
-| curl -sSf -X PUT -H "$GIT_HEAD" "$GIT_REPO/variables/PNG_TARGETS" --form "value=$(cat)" \
+| xargs -I {} $CURL "$REPO/variables/PNG_TARGETS" -X PUT -F "value={}" \
 | wc -c
 
 # trigger next steps
-curl -sSf -X POST -H "$GIT_HEAD" "$GIT_REPO/pipeline?ref=main" 
+$CURL "$REPO/pipeline?ref=main" -X POST
