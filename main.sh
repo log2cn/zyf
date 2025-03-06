@@ -1,5 +1,5 @@
 REPO="https://git.nju.edu.cn/api/v4/projects/13817"
-CURL="curl -sSf -H \"PRIVATE-TOKEN: $GITLAB_TOKEN\" --retry 3"
+CURL="curl -sSf -H PRIVATE-TOKEN:$GITLAB_TOKEN --retry 3"
 
 # html_targets -> png_targets
 $CURL "$REPO/repository/files/html_targets.txt/raw" \
