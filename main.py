@@ -61,11 +61,12 @@ def get_image_urls(target):
         yield image_url, save_path
 
 from sys import stdin, stderr
-for line in stdin:
-    target = line.split("#")[0].strip()
-    if target:
-        try:
-            for array in get_image_urls(target):
-                print(*array)
-        except Exception as e:
-            print(f"{target}: {e.__class__.__name__}: {e}", file=stderr)
+for target in stdin:
+    target = target.strip()
+    if not target or target.startswith('#'):
+        continue
+    try:
+        for array in get_image_urls(target):
+            print(*array)
+    except Exception as e:
+        print(f"{target}: {e.__class__.__name__}: {e}", file=stderr)
