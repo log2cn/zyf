@@ -4,6 +4,7 @@ CURL="curl -sSf -H PRIVATE-TOKEN:$GITLAB_TOKEN --retry 3"
 # html_targets -> png_targets
 $CURL "$REPO/repository/files/html_targets.txt/raw" \
 | python3 main.py \
+| tee >(head -n 10) \
 | tr '\n' ' ' \
 | xargs -I {} $CURL "$REPO/variables/PNG_TARGETS" -X PUT -F "value={}" \
 | wc -c
