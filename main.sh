@@ -6,6 +6,6 @@ $CURL "$REPO/repository/files/html_targets.txt/raw" \
 | tr '\n' ' ' \
 > png_targets.txt
 
-$CURL "$REPO/variables/PNG_TARGETS" -X PUT -F "value=@png_targets.txt" | wc -c
+$CURL "$REPO/variables/PNG_TARGETS" -X PUT -F "value=$(cat png_targets.txt)" | wc -c
 
 $CURL "$REPO/pipeline?ref=main" -X POST
