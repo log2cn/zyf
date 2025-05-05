@@ -5,13 +5,8 @@ set -x
 $CURL "$REPO/repository/files/html_targets.txt/raw" \
 | python3 main.py \
 | tr '\n' ' ' \
-| $CURL "$REPO/variables/PNG_TARGETS" -X PUT -F "value=$(cat)" \
-| wc -c
+> png_targets.txt
 
-# $CURL "$REPO/repository/files/html_targets.txt/raw" \
-# | python3 main.py \
-# | tr '\n' ' ' \
-# | xargs -I {} $CURL "$REPO/variables/PNG_TARGETS" -X PUT -F "value={}" \
-# | wc -c
+$CURL "$REPO/variables/PNG_TARGETS" -X PUT -F "value=@png_targets.txt" | wc -c
 
 $CURL "$REPO/pipeline?ref=main" -X POST
