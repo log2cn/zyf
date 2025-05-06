@@ -6,6 +6,6 @@ $CURL $REPO/repository/files/html_targets.txt/raw | python3 main.py | {
   sed -n   500,999p | tr '\n' ' ' | xargs -I {} $CURL $REPO/variables/PNG_TARGETS1 -X PUT -F value={} | wc -c
   sed -n 1000,1499p | tr '\n' ' ' | xargs -I {} $CURL $REPO/variables/PNG_TARGETS2 -X PUT -F value={} | wc -c
   wc -l
-|
+}
 
 $CURL $REPO/pipeline?ref=main -X POST | wc -c
