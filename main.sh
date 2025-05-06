@@ -3,6 +3,8 @@ CURL="curl -sSf -H PRIVATE-TOKEN:$GITLAB_TOKEN --retry 3"
 
 $CURL $REPO/repository/files/html_targets.txt/raw | python3 main.py > png_targets.txt
 
+wc -l png_targets.txt
+
 $CURL $REPO/variables/PNG_TARGETS0 -X DELETE
 $CURL $REPO/variables/PNG_TARGETS1 -X DELETE
 $CURL $REPO/variables/PNG_TARGETS2 -X DELETE
