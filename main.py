@@ -1,4 +1,5 @@
 import re
+from sys import stdin, stderr
 
 def get_path(target):
     # split ext
@@ -21,7 +22,7 @@ def get_path(target):
         elif target.startswith("observations/hourly-"):
             pass
         else:
-            raise Exception(f"no match for observations/: {target}")
+            print(f"no match for observations/: {target}", file=stderr)
     elif target.startswith("radar/"):
         prefix = target.split("/")[-1]
         path = f"%Y%m/%Y%m%d/{prefix}_%Y%m%d_%H%Mz.png"
@@ -30,13 +31,13 @@ def get_path(target):
         elif target_ext == "html":
             pass
         else:
-            raise Exception(f"no match for radar/: {target}")
+            print(f"no match for radar/: {target}", file=stderr)
     elif target.startswith("tianqishikuang/"):
         dirname = dirname.replace("-index", "")
     elif target.startswith("satellite/"):
         pass
     else:
-        raise Exception(f"no match: {target}")
+        print(f"no match: {target}", file=stderr)
 
     return dirname + "/" + path
 
@@ -60,7 +61,6 @@ def get_image_urls(target):
         save_path = extract_time(image_url).strftime(get_path(target))
         yield image_url, save_path
 
-from sys import stdin, stderr
 for target in stdin:
     target = target.strip()
     if not target or target.startswith('#'):
