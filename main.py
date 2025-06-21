@@ -1,7 +1,7 @@
 import re
 from sys import stdin, stderr
 
-def get_path(target):
+def get_path_fmt(target):
     # split ext
     assert target.count('.') == 1, "target.count('.') != 1"
     target_ext = target.split(".")[1] # htm or html
@@ -56,10 +56,11 @@ def get_text(url):
 IMG_PATTERN = re.compile(r'data-img="(.*?)"')
 def get_image_urls(target):
     url = f"http://www.nmc.cn/publish/{target}"
+    path_fmt = get_path_fmt(target)
     for match in IMG_PATTERN.finditer(get_text(url)):
-        image_url = match.group(1).split('?')[0]
-        save_path = extract_time(image_url).strftime(get_path(target))
-        yield image_url, save_path
+        url  = match.group(1).split('?')[0]
+        path = extract_time(url).strftime(path_fmt)
+        yield url, path
 
 for target in stdin:
     target = target.strip()
